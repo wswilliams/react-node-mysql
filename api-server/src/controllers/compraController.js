@@ -1,5 +1,6 @@
 const Compra = require('../models/compra')
 const CompraProduto = require('../models/compra_produto')
+const Produto = require('../models/produto')
 const status = require('http-status')
 const moment = require('moment')
 
@@ -56,11 +57,37 @@ exports.SearchAll = (req, res, next) => {
 
 // Select por ID
 exports.SearchOne = (req, res, next) => {
+
   const id = req.params.id
+
   Compra.findByPk(id)
   .then(compra => {
     if(compra) {
-      res.status(status.OK).send(compra)
+      CompraProduto.findAll({
+        where: {id_compra: id}
+      })
+      .then(compraProduto => {
+
+        let compras ={
+          compra,
+          produtos: []
+        }
+
+        // recupera os produtos por ID
+        let count = 0;
+          for (let value of compraProduto) {
+
+              Produto.findByPk(value.id_produto)
+              .then(produto => {
+                console.log(produto)
+                compras.produtos.push(produto)
+              })
+              count ++;
+  
+              if(count == compraProduto.length)
+                res.status(status.OK).send(compras)
+          }
+      })
     } else {
       res.status(status.NOT_FOUND).send()
     }
