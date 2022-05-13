@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
-const EditUserForm = props => {
-    const [user, setUser] = useState(props.currentUser);
+const EditProdutoForm = props => {
+    const [produto, setProduto] = useState(props.currentProduto);
 
     const handleInputChange = event => {
         const { name, value } = event.target
 
-        setUser({ ...user, [name]: value })
+        setProduto({ ...produto, [name]: value })
     };
 
     const submitForm = event => {
         event.preventDefault();
 
-        props.updateUser(user.id, user);
+        props.updateProduto(produto.id, produto);
     };
-
+ 
     useEffect(() => {
-        setUser(props.currentUser);
+        setProduto(props.currentProduto);
     }, [props]);
 
     return (
@@ -28,25 +28,36 @@ const EditUserForm = props => {
                     <div className="input-field col s12">
 
                         <input type="text" 
-                            id={user.id} 
-                            name="name"
-                            value={user.name}
+                            id={produto.id} 
+                            name="nome"
+                            value={produto.nome}
                             onChange={handleInputChange} 
                             required />
-                        <label htmlFor="name"></label>
+                        <label htmlFor="nome"></label>
                     </div>
                 </div>
-
                 <div className="row">
                     <div className="input-field col s12">
 
                         <input 
                             type="text" 
-                            name="username" 
-                            value={user.username}
+                            name="descricao" 
+                            value={produto.descricao}
                             onChange={handleInputChange} 
                             required />
-                        <label htmlFor="username"></label>
+                        <label htmlFor="descrição"></label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12">
+
+                        <input 
+                            type="text" 
+                            name="preco" 
+                            value={produto.preco}
+                            onChange={handleInputChange} 
+                            required />
+                        <label htmlFor="preço"></label>
                     </div>
                 </div>
                 
@@ -69,4 +80,4 @@ const EditUserForm = props => {
     );
 };
 
-export default EditUserForm;
+export default EditProdutoForm;

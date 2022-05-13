@@ -1,33 +1,40 @@
 import React from 'react';
 
-const UserTable = props => (
+const ProdutoTable = props => (
+
   
     <table className="responsive-table">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Username</th>
+                <th>descricao</th>
+                <th>preco</th>
+                <th>data_criacao</th>
+                <th>data_atualizacao</th>
                 <th>Actions</th>
             </tr>
         </thead>
     <tbody>
         {
-            props.users.length > 0 ? (
-                props.users.map (user => (
+            props.produtos.length > 0 ? (
+                props.produtos.map (produto => (
 
-                    <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.username}</td>
+                    <tr key={produto.id}>
+                        <td>{produto.nome}</td>
+                        <td>{produto.descricao}</td>
+                        <td>{produto.preco}</td>
+                        <td>{produto.data_criacao}</td>
+                        <td>{produto.data_atualizacao}</td>
                         <td className="center-align">
                             <button 
                                 className="waves-effect waves-light btn-small"
-                                onClick={() => props.editRow(user)}>
+                                onClick={() => props.editRow(produto)}>
                                 edit
                             </button>
 
                             <button 
                                 className="waves-effect waves-light btn-small red darken-4"
-                                onClick={() => props.deleteUser(user.id)}>
+                                onClick={() => props.deleteProduto(produto.id)}>
                                 delete
                             </button>
                         </td> 
@@ -35,7 +42,7 @@ const UserTable = props => (
                     ))
                 ) : (
                     <tr>
-                        <td colSpan={3}>{props.users[0]} No Users</td>
+                        <td colSpan={3}>{props.produtos[0]} No Produtos</td>
                     </tr>
                 )
         }          
@@ -43,4 +50,4 @@ const UserTable = props => (
   </table>
 );
     
-export default UserTable;
+export default ProdutoTable;

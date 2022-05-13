@@ -8,6 +8,8 @@ exports.Insert = (req, res, next) => {
   const descricao = req.body.descricao;
   const preco = req.body.preco
   const data_criacao = moment().format();
+
+  console.log("req.body ",req.body)
   
 
   Produto.create({

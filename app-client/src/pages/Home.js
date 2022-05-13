@@ -3,9 +3,9 @@ import qs from 'querystring';
 
 import api from '../services/api';
 
-import UserTable from '../components/table/UserTable';
-import AddUserForm from '../components/forms/AddUserForm';
-import EditUserForm from '../components/forms/EditUserForm';
+import ProdutoTable from '../components/table/ProdutoTable';
+import AddProdutoForm from '../components/forms/AddProdutoForm';
+import EditProdutoForm from '../components/forms/EditProdutoForm';
 
 class Home extends Component {
 
@@ -13,63 +13,64 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            users: [],
-            currentUser: { id: null, name: '', username: '' },
+            produtos: [],
+            currentProduto: { id: null, nome: '', descricao: '', preco: '', data_criacao: '', data_atualizacao: '' },
             editing: false
         }
     }
 
     componentDidMount() {
-        this.refreshUserTable();
+        this.refreshProdutoTable();
     }
 
-    refreshUserTable() {
-        this.usersData = api.get('api')
+    refreshProdutoTable() {
+        this.produtoData = api.get('api/produtos')
             .then(response => response.data)
             .then(data => {
+                console.log(" home.data", data)
 
                 this.setState({ 
-                    users: data.data,
-                    setUsers: data.data
+                    produtos: data,
+                    setProdutos: data
                 });
             });
     }
 
-    addUser = user => {
+    addProduto = produto => {
 
-        api.post('api', qs.stringify(user))
+        api.post('api/produtos',produto)
             .then(res => {
-                this.refreshUserTable();
+                this.refreshProdutoTable();
             });
     };
 
-    deleteUser = id => {
+    deleteProduto = id => {
 
-        api.delete(`api/${id}`)
+        api.delete(`api/produtos/${id}`)
             .then(res => {
-                this.refreshUserTable();
+                this.refreshProdutoTable();
             });
     };
 
-    updateUser = (id, user) => {
+    updateProduto = (id, produto) => {
         
-        api.put(`api/${id}`, qs.stringify(user))
+        api.put(`api/produtos/${id}`,produto)
             .then(res => {
 
-                this.refreshUserTable();
+                this.refreshProdutoTable();
             });
         
         this.setState({ 
-            currentUser: { id: null, name: '', username: '' }
+            currentProduto: { id: null, nome: '', descricao: '', preco: '', data_criacao: '', data_atualizacao: '' }
         });
 
         this.setEditing(false);
     };
 
-    editRow = user => {
+    editRow = produto => {
 
         this.setState({ 
-            currentUser: { id: user.id, name: user.name, username: user.username }
+            currentProduto: { id: produto.id, nome: produto.nome, descricao: produto.descricao, preco: produto.preco, data_criacao: produto.data_criacao, data_atualizacao: produto.data_atualizacao}
         });
 
         this.setEditing(true);
@@ -81,7 +82,7 @@ class Home extends Component {
     };
 
     render () {
-        const { users } = this.state;
+        const { produtos } = this.state;
 
         return (
             <div className="container">
@@ -91,25 +92,25 @@ class Home extends Component {
                     {
                         this.state.editing ? (
                             <div className="col s12 l6">
-                                <h4>Edit User</h4>
-                                <EditUserForm 
+                                <h4>Edit Produto</h4>
+                                <EditProdutoForm 
                                     editing={this.state.editing}
                                     setEditing={this.setEditing}
-                                    currentUser={this.state.currentUser}
-                                    updateUser={this.updateUser} 
+                                    currentProduto={this.state.currentProduto}
+                                    updateProduto={this.updateProduto} 
                                 />
                             </div>
                         ) : (
-                            <div className="col s12 l6">
-                                <h4>Add user</h4>
-                                <AddUserForm addUser={this.addUser} />
+                            <div className="col s4 5">
+                                <h4>Add Produto</h4>
+                                <AddProdutoForm addProduto={this.addProduto} />
                             </div>
                         )
                     }
                     
                     <div className="col s12 l6">
-                        <h5>Users</h5>
-                        <UserTable users={users} editRow={this.editRow} deleteUser={this.deleteUser} />
+                        <h5>Produtos</h5>
+                        <ProdutoTable produtos={produtos} editRow={this.editRow} deleteProduto={this.deleteProduto} />
                     </div>
                 </div>
             </div>
