@@ -3,6 +3,7 @@ const CompraProduto = require('../models/compra_produto')
 const Produto = require('../models/produto')
 const status = require('http-status')
 const moment = require('moment')
+const { QueryTypes } = require('sequelize');
 
 // Insert
 exports.Insert = (req, res, next) => {
@@ -56,43 +57,34 @@ exports.SearchAll = (req, res, next) => {
 }
 
 // Select por ID
-exports.SearchOne = (req, res, next) => {
+exports.SearchOne = async (req, res, next) => {
 
   const id = req.params.id
 
-  Compra.findByPk(id)
-  .then(compra => {
-    if(compra) {
-      CompraProduto.findAll({
-        where: {id_compra: id}
-      })
-      .then(compraProduto => {
+  const result = await Compra.sequelize.query(`SELECT * FROM compras where id = ${id}`, { type: QueryTypes.SELECT });
+  if(!result)
+    res.status(status.NOT_FOUND).send()
 
-        let compras ={
-          compra,
-          produtos: []
-        }
+  const compraProduto = await CompraProduto.sequelize.query(`SELECT * FROM compra_produtos where id_compra = ${id}`, { type: QueryTypes.SELECT });
 
-        // recupera os produtos por ID
-        let count = 0;
-          for (let value of compraProduto) {
+  let compras ={
+    compra: result[0],
+    produtos: []
+  }
 
-              Produto.findByPk(value.id_produto)
-              .then(produto => {
-                console.log(produto)
-                compras.produtos.push(produto)
-              })
-              count ++;
-  
-              if(count == compraProduto.length)
-                res.status(status.OK).send(compras)
-          }
-      })
-    } else {
-      res.status(status.NOT_FOUND).send()
+  // recupera os produtos por ID
+  let count = 0;
+    for (let value of compraProduto) {
+
+      const produto = await Produto.sequelize.query(`SELECT * FROM produtos where id = ${value.id_produto}`, { type: QueryTypes.SELECT });
+      compras.produtos.push(produto[0])
+
+        if(count == compraProduto.length)
+          break
+
+      count ++;
     }
-  })
-  .catch(error => next(error))
+    res.status(status.OK).send(compras)
 }
 
 // Update
@@ -129,7 +121,6 @@ exports.Update = (req, res, next) => {
                 id_compra: compra.id,
                 id_produto: value,
               }).then(compraProduto => {
-                console.log(compraProduto)
               })
               count ++;
   

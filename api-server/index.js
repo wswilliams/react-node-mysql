@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   res.status.apply(status.INTERNAL_SERVER_ERROR).json({error})
 })
 
-sequelize.sync({force: false}).then(() => {
+sequelize.sync({force: true}).then(() => {
   const port = 3003
   app.set("port", port)
   const server = http.createServer(app)

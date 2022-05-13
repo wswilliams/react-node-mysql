@@ -3,10 +3,10 @@ module.exports = {
     database: {
       host: 'localhost',
       port: 3306,
-      name: 'teste',
+      name: 'test',
       dialect: 'mysql',
       user: 'root',
-      password: '123'
+      password: ''
     }
   },
   production:{
