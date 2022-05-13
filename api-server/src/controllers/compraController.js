@@ -88,27 +88,28 @@ exports.Update = (req, res, next) => {
         where: { id: id }
       })
       .then(() => {
-        
+
+        //remove os idem da tabela de relacionamento 
         CompraProduto.destroy({
           where: {id_compra: id}
         })
         .then(() => {
-          res.status(status.OK).send()
+
+          //inseri os idem da tabela de relacionamento 
+          let count = 0;
+          for (let value of produtos) {
+              CompraProduto.create({
+                id_compra: compra.id,
+                id_produto: value,
+              }).then(compraProduto => {
+                console.log(compraProduto)
+              })
+              count ++;
+  
+              if(count == produtos.length)
+                res.status(status.OK).send(compra)
+          }
         })
-
-        let count = 0;
-        for (let value of produtos) {
-            CompraProduto.create({
-              id_compra: compra.id,
-              id_produto: value,
-            }).then(compraProduto => {
-              console.log(compraProduto)
-            })
-            count ++;
-
-            if(count == produtos.length)
-              res.status(status.OK).send(compra)
-        }
       })
       .catch(error => next(error))
     } else {
