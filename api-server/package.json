@@ -1,0 +1,27 @@
+{
+  "name": "curso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaioWillianMoreira/crud-node-mysql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CaioWillianMoreira/crud-node-mysql/issues"
+  },
+  "homepage": "https://github.com/CaioWillianMoreira/crud-node-mysql#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-status": "^1.3.2",
+    "moment": "^2.29.3",
+    "mysql2": "^1.7.0",
+    "sequelize": "^5.18.4"
+  }
+}
