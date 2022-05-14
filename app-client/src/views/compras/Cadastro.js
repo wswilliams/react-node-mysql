@@ -15,7 +15,7 @@ class CadastroCompras extends React.Component{
             this.state = {
                 total:0,
                 tipo_pagamento:'credito',
-                status:'',
+                status:'Finalizado',
                 produtos:[],
                 produtos_formulario: [],
                 sucesso: false,
@@ -55,22 +55,22 @@ class CadastroCompras extends React.Component{
 
                     console.log("onSubmit",compras)
 
-                    /*if (id){
+                    if (id){
                        
-                        api.put(`api/produtos/${id}`,produto)
+                        api.put(`api/compras/${id}`,compras)
                         .then(res => {
                             this.limpaCampos()
                             this.setState({sucesso: true, atualizando: true})
-                            this.props.history.push(`/consulta-produtos`)
+                            this.props.history.push(`/consulta-compras`)
                         });
-                    }else{*/
+                    }else{
                         api.post('api/compras',compras)
                         .then(res => {
                             this.limpaCampos()
                             this.setState({sucesso: true, atualizando: false})
                         });
                         
-                    //}
+                    }
                    
                 } catch(erro){
                    const errors =  erro.errors
@@ -95,18 +95,23 @@ class CadastroCompras extends React.Component{
         componentDidMount(){
 
             this.refreshProdutoTable();
-            this.refreshCompraTableCar();
             
-         /* const id =  this.props.match.params.id
+         const id =  this.props.match.params.id
 
           if (id){
-            api.get(`api/produtos/${id}`)
+    
+            api.get(`api/compras/${id}`)
             .then(response => response.data)
             .then(data => {
-
-                this.setState({...data , atualizando: true})
+                this.setState({...data.compra , atualizando: true})
+                this.service.salvarAll(data.produtos)
+                this.refreshCompraTableCar();
             });
-          }*/
+          }else{
+         
+            this.service.deletarAll();
+            this.refreshCompraTableCar();
+          }
         }
 
         refreshProdutoTable() {
@@ -133,10 +138,7 @@ class CadastroCompras extends React.Component{
             this.state.total += produto.preco;
             this.state.adicionado = true;
             this.refreshCompraTableCar();
-           /* this.setState({ 
-                produtos: produto.id,
-                setProdutos: data
-            });*/
+ 
         }
         removeItem(item){
 

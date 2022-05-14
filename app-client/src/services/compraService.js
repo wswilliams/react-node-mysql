@@ -60,4 +60,17 @@ export default class CompraService {
 
      localStorage.setItem(COMPRAS,JSON.stringify(compras))
     }
+
+    salvarAll = (compra) => {
+
+        let compras = localStorage.getItem(COMPRAS)
+        if (!compras){
+          compras = compra
+        }else {
+            localStorage.clear();
+            compras = compra
+        }
+  
+       localStorage.setItem(COMPRAS,JSON.stringify(compras))
+      }
 }
