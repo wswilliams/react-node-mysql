@@ -1,18 +1,24 @@
-import React from 'react';
+import Navbar from "./components/Navbar";
+import Rotas from "./rotas";
+import {HashRouter} from 'react-router-dom'
 
-import NavBar from './components/navbar';
 
-import Home from './pages/Home';
+function App() {
+  return (
+    <>
 
-const App = () => {
+    <HashRouter>
 
-    return (
-        <div>
-            <NavBar />
-
-            <Home />
-        </div>
-    )
-};
+    <div className="container">
+        <Navbar/>
+        <Rotas/>
+      </div>
+      
+    </HashRouter>
+      
+     
+    </>
+  );
+}
 
 export default App;
