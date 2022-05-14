@@ -1,3 +1,4 @@
+const { QueryTypes } = require('sequelize');
 const Produto = require('../models/produto')
 const status = require('http-status')
 const moment = require('moment')
@@ -40,19 +41,27 @@ exports.SearchAll = (req, res, next) => {
 }
 
 // Select por ID
-exports.SearchOne = (req, res, next) => {
+exports.SearchOne = async (req, res, next) => {
   const id = req.params.id
-  Produto.findByPk(id)
-  .then(produto => {
-    if(produto) {
-      res.status(status.OK).send(produto)
-    } else {
+ 
+  if(typeof (id) == "string"){
+    const result = await Produto.sequelize.query(`SELECT * FROM produtos where nome like '%${id}%'`, { type: QueryTypes.SELECT });
+    if(!result)
       res.status(status.NOT_FOUND).send()
-    }
-  })
-  .catch(error => next(error))
-}
+    res.status(status.OK).send(result)
 
+  }else{
+      Produto.findByPk(id)
+      .then(produto => {
+        if(produto) {
+          res.status(status.OK).send(produto)
+        } else {
+          res.status(status.NOT_FOUND).send()
+        }
+      })
+      .catch(error => next(error))
+  }
+}
 // Update
 exports.Update = (req, res, next) => {
   const id = req.params.id

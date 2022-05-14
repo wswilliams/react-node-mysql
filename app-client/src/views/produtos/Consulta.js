@@ -12,6 +12,7 @@ class ConsultaProdutos extends React.Component{
         this.state = {
             produtos: []
         }
+
     }
 
     componentDidMount() {
@@ -28,7 +29,24 @@ class ConsultaProdutos extends React.Component{
                 });
             });
     }
-
+    onChange = (event)=>{
+      const term =   event.target.value
+      const nomeDoCampo = event.target.name
+      
+      if(term.length > 3){
+        this.produtoData = api.get(`api/produtos/${term}`)
+        .then(response => response.data)
+        .then(data => {
+            this.setState({ 
+                produtos: data,
+                setProdutos: data
+            });
+        });
+      }else{
+        this.refreshProdutoTable();
+      }
+            
+   }
     preparaEditar = (produto) => {
 
         this.props.history.push(`/cadastro-produtos/${produto.id}`)
@@ -45,9 +63,16 @@ class ConsultaProdutos extends React.Component{
         return (
 
         <div className="Card">
+           
             <div className="card-header">
-                Consulta Produtos
+ 
+                < label htmlFor = " search " > 
+                    Consulta por nome :
+                    < input id = "search" type = " text " onChange = {this.onChange} />    
+                </ label >
+
             </div>
+
             <div className="card-body">
 
                 <table className="table tale-houver">
