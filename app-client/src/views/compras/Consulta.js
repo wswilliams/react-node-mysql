@@ -24,6 +24,7 @@ class ConsultaCompras extends React.Component{
         this.compraData = api.get('api/compras')
             .then(response => response.data)
             .then(data => {
+                console.log("refreshCompraTable data.compras: ",data)
                 this.setState({ 
                     compras: data,
                     setCompras: data
@@ -31,15 +32,17 @@ class ConsultaCompras extends React.Component{
             });
     }
     onChange = (event)=>{
-      const term =   event.target.value
+      const term =  event.target.value
       
-      if(term.length > 3){
+      if(term.length > 2){
+        
         this.comprasData = api.get(`api/compras/${term}`)
         .then(response => response.data)
         .then(data => {
+            console.log("onChange data.compras: ",data.compra)
             this.setState({ 
-                compras: data,
-                setCompras: data
+                compras: data.compra,
+                setCompras: data.compra
             });
         });
       }else{
@@ -59,7 +62,9 @@ class ConsultaCompras extends React.Component{
             });
     }
 
-
+    details = (id) => {
+        this.props.history.push(`/compras-detalhes/${id}`)
+    }
     render(){
 
         return (
@@ -103,6 +108,10 @@ class ConsultaCompras extends React.Component{
                         
                         <button onClick={() => this.deletar(compra.id)}
                          className="btn btn-danger"> Remover</button>
+
+
+                        <button id="details" onClick={() => this.details(compra.id)}
+                         className="btn btn-info mx-2 px-4"> Detalhes</button>
                             </th>
                             
                         </tr>

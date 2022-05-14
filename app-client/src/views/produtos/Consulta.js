@@ -59,6 +59,10 @@ class ConsultaProdutos extends React.Component{
             });
     }
 
+    details = (id) => {
+        this.props.history.push(`/produtos-detalhes/${id}`)
+    }
+
     render(){
         return (
 
@@ -100,7 +104,10 @@ class ConsultaProdutos extends React.Component{
                         <button onClick={ ()=> this.preparaEditar(produto)} className="btn  btn-primary mx-2 px-4"> Editar</button>
                         
                         <button onClick={() => this.deletar(produto.id)}
-                         className="btn btn-danger"> Remover</button>
+                         className="btn  btn-danger mx-2 px-4"> Remover</button>
+
+                        <button id="details" onClick={() => this.details(produto.id)}
+                         className="btn btn-info mx-2 px-4"> Detalhes</button>
                             </th>
                             
                         </tr>

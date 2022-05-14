@@ -28,7 +28,7 @@ exports.Insert = (req, res, next) => {
       for (let value of produtos) {
           CompraProduto.create({
             id_compra: compra.id,
-            id_produto: value,
+            id_produto: value.id,
           }).then(compraProduto => {
             
           })
@@ -60,15 +60,23 @@ exports.SearchAll = (req, res, next) => {
 exports.SearchOne = async (req, res, next) => {
 
   const id = req.params.id
+  let result = [];
+  //persquisar pelo termo
+  if(typeof (id) == "string" && parseInt(id) > 0){
+    result = await Compra.sequelize.query(`SELECT * FROM compras where id = ${id}`, { type: QueryTypes.SELECT });
+    if(!result)
+      res.status(status.NOT_FOUND).send()
+  }else{
+    result = await Compra.sequelize.query(`SELECT * FROM compras where tipo_pagamento like '%${id}%'`, { type: QueryTypes.SELECT });
+    if(!result)
+      res.status(status.NOT_FOUND).send()
+  }
+ 
 
-  const result = await Compra.sequelize.query(`SELECT * FROM compras where id = ${id}`, { type: QueryTypes.SELECT });
-  if(!result)
-    res.status(status.NOT_FOUND).send()
-
-  const compraProduto = await CompraProduto.sequelize.query(`SELECT * FROM compra_produtos where id_compra = ${id}`, { type: QueryTypes.SELECT });
+  const compraProduto = await CompraProduto.sequelize.query(`SELECT * FROM compra_produtos where id_compra = ${result[0].id}`, { type: QueryTypes.SELECT });
 
   let compras ={
-    compra: result[0],
+    compra: parseInt(id) > 0 ? result[0] : result,
     produtos: []
   }
 
@@ -119,7 +127,7 @@ exports.Update = (req, res, next) => {
           for (let value of produtos) {
               CompraProduto.create({
                 id_compra: compra.id,
-                id_produto: value,
+                id_produto: value.id,
               }).then(compraProduto => {
               })
               count ++;
