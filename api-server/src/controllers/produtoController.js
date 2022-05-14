@@ -44,14 +44,9 @@ exports.SearchAll = (req, res, next) => {
 exports.SearchOne = async (req, res, next) => {
   const id = req.params.id
  
-  if(typeof (id) == "string"){
-    const result = await Produto.sequelize.query(`SELECT * FROM produtos where nome like '%${id}%'`, { type: QueryTypes.SELECT });
-    if(!result)
-      res.status(status.NOT_FOUND).send()
-    res.status(status.OK).send(result)
-
-  }else{
-      Produto.findByPk(id)
+  //persquisar pelo termo
+  if(typeof (id) == "string" && parseInt(id) > 0){
+    Produto.findByPk(id)
       .then(produto => {
         if(produto) {
           res.status(status.OK).send(produto)
@@ -60,6 +55,12 @@ exports.SearchOne = async (req, res, next) => {
         }
       })
       .catch(error => next(error))
+
+  }else{
+    const result = await Produto.sequelize.query(`SELECT * FROM produtos where nome like '%${id}%'`, { type: QueryTypes.SELECT });
+    if(!result)
+      res.status(status.NOT_FOUND).send()
+    res.status(status.OK).send(result)
   }
 }
 // Update

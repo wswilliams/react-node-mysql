@@ -1,6 +1,5 @@
 import React from "react";
 
-//import ProdutoService from "../../app/produtoService";
 import api from '../../services/api';
 import {withRouter} from 'react-router-dom'
  

@@ -6,6 +6,10 @@ import CadastroProdutos from "./views/produtos/Cadastro";
 
 import ConsultaProdutos from "./views/produtos/Consulta";
 
+import CadastroCompras from "./views/compras/Cadastro";
+
+import ConsultaCompras from "./views/compras/Consulta";
+
 
 export default () => {
     return(
@@ -14,6 +18,8 @@ export default () => {
                 <Switch>
                     <Route exact path="/cadastro-produtos/:id?" component={CadastroProdutos}/>
                     <Route exact path="/consulta-produtos" component={ConsultaProdutos}/>
+                    <Route exact path="/cadastro-compras/:id?" component={CadastroCompras}/>
+                    <Route exact path="/consulta-compras" component={ConsultaCompras}/>
                     <Route exact path="/" component={Home}/>
                     
 

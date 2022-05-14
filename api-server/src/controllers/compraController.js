@@ -30,7 +30,7 @@ exports.Insert = (req, res, next) => {
             id_compra: compra.id,
             id_produto: value,
           }).then(compraProduto => {
-            console.log(compraProduto)
+            
           })
           count ++;
 

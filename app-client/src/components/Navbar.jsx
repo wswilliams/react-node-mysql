@@ -27,15 +27,11 @@ function Navbar(){
                 <li className="nav-item">
                   < Link className="nav-link" to="/consulta-produtos">Consulta Produto</ Link>
                 </li>
-                <li className="nav-item active">
-                  <Link className="nav-link" to="/">Compra cadastro
-                    <span className="visually-hidden">(current)</span>
-                  </Link>
+                <li className="nav-item">
+                  <Link  className="nav-link" to="/cadastro-compras">Cadastro Compras</ Link>
                 </li>
-                <li className="nav-item active">
-                  <Link className="nav-link" to="/">Compra consulta
-                    <span className="visually-hidden">(current)</span>
-                  </Link>
+                <li className="nav-item">
+                < Link className="nav-link" to="/consulta-compras">Consulta Compras</ Link>
                 </li>
               
               </ul>
