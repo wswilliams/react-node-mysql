@@ -21,7 +21,8 @@ class CadastroCompras extends React.Component{
                 sucesso: false,
                 adicionado: true,
                 errors:[],
-                atualizando: false
+                atualizando: false,
+                isItem: false
             }
             this.service = new ProdutoService();
             this.handleChange = this.handleChange.bind(this);
@@ -36,6 +37,9 @@ class CadastroCompras extends React.Component{
 
         handleChange(event) {
             this.setState({tipo_pagamento: event.target.value});
+          }
+        handleChangeStatus(event) {
+            this.setState({status: event.target.value});
           }
         
           handleSubmit(event) {
@@ -53,16 +57,21 @@ class CadastroCompras extends React.Component{
                 try{
                     const id =  this.props.match.params.id
 
-                    console.log("onSubmit",compras)
-
                     if (id){
-                       
-                        api.put(`api/compras/${id}`,compras)
-                        .then(res => {
-                            this.limpaCampos()
-                            this.setState({sucesso: true, atualizando: true})
-                            this.props.history.push(`/consulta-compras`)
-                        });
+                        const count = this.service.obterCompras();
+                   
+                        if(count.length > 0){
+                    
+                            api.put(`api/compras/${id}`,compras)
+                            .then(res => {
+                                this.limpaCampos()
+                                this.setState({sucesso: true, atualizando: true})
+                                this.props.history.push(`/consulta-compras`)
+                            });
+                        }else{
+                            const errors =  ['obrigatório ao menos um produto']
+                            this.setState({errors: errors})
+                        }
                     }else{
                         api.post('api/compras',compras)
                         .then(res => {
@@ -85,8 +94,8 @@ class CadastroCompras extends React.Component{
         limpaCampos = ()=> {
             this.setState ({
             total:0,
-            tipo_pagamento:'',
-            status: '',
+            tipo_pagamento:'credito',
+            status: 'Finalizado',
             produtos_formulario: []
             });
             this.service.deletarAll();
@@ -133,12 +142,21 @@ class CadastroCompras extends React.Component{
 
         addItem(produto){
 
-            this.service.salvar(produto)
+           const item = this.service.obterIndex(produto.id);
 
-            this.state.total += produto.preco;
-            this.state.adicionado = true;
-            this.refreshCompraTableCar();
- 
+           this.setState({isItem: false})
+
+           if(item !== null)
+                this.setState({isItem: true})
+           else{
+                this.setState({isItem: false})
+
+                this.service.salvar(produto)
+
+                this.state.total += produto.preco;
+                this.state.adicionado = true;
+                this.refreshCompraTableCar();
+            }
         }
         removeItem(item){
 
@@ -179,14 +197,19 @@ class CadastroCompras extends React.Component{
 
                             this.state.errors.map(msg => {
                                 return (
-                                    <div className="alert alert-dismissible alert-danger">
+                                    <div className="alert alert-dismissible alert-danger"  key={'uniqueValue'}>
                                     <button type="button" className="btn-close" data-bs-dismiss="alert"></button>
                                     <strong>Erro!</strong> {msg}.
                                     </div>
                                 )
                             })
-    
-                        
+                    }
+                    {
+                        this.state.isItem > 0 &&
+                        <div className="alert alert-dismissible alert-danger">
+                        <button type="button" className="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>Erro!</strong> Item já existente no carinho
+                        </div>
                     }
 
                 <table className="table tale-houver">
@@ -259,11 +282,10 @@ class CadastroCompras extends React.Component{
 
                             <div className="form-group">
                                 <label > Status: </label>
-                                <input type="text" 
-                                value={this.state.status} 
-                                name="status" 
-                                onChange = {this.onChange}
-                                className="form-control" />
+                                <select className="form-control" value={this.state.status} onChange={this.handleChangeStatus}>
+                                    <option value="FInalizado">FInalizado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </select>
                             </div>
 
                         </div>

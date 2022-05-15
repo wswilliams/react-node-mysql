@@ -20,11 +20,9 @@ class ConsultaCompras extends React.Component{
 
     refreshCompraTable() {
 
-        console.log("entrei aqui")
         this.compraData = api.get('api/compras')
             .then(response => response.data)
             .then(data => {
-                console.log("refreshCompraTable data.compras: ",data)
                 this.setState({ 
                     compras: data,
                     setCompras: data
@@ -39,7 +37,7 @@ class ConsultaCompras extends React.Component{
         this.comprasData = api.get(`api/compras/${term}`)
         .then(response => response.data)
         .then(data => {
-            console.log("onChange data.compras: ",data.compra)
+    
             this.setState({ 
                 compras: data.compra,
                 setCompras: data.compra
