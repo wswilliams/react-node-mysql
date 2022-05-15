@@ -7,5 +7,8 @@
 - mysql2: __1.7.0__
 - sequelize: __5.18.4__
 
+## Install Dependências
+- npm install
+
 ## To Run 
-- node index
+- npm start
