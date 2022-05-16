@@ -1,6 +1,7 @@
 const http = require('http')
 const cors = require('cors')
 const express = require('express')
+const createDB = require('./create_data_base');
 const status = require('http-status')
 const sequelize = require('./src/database/database')
 const app = express()
