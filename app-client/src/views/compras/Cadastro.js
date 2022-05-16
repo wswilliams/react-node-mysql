@@ -67,7 +67,10 @@ class CadastroCompras extends React.Component{
                                 this.limpaCampos()
                                 this.setState({sucesso: true, atualizando: true})
                                 this.props.history.push(`/consulta-compras`)
-                            });
+                            }).catch(erro => {
+                                const data = [erro.response.data]
+                                this.setState({errors: data})
+                            })
                         }else{
                             const errors =  ['obrigatório ao menos um produto']
                             this.setState({errors: errors})
@@ -77,7 +80,10 @@ class CadastroCompras extends React.Component{
                         .then(res => {
                             this.limpaCampos()
                             this.setState({sucesso: true, atualizando: false})
-                        });
+                        }).catch(erro => {
+                            const data = [erro.response.data]
+                            this.setState({errors: data})
+                        })
                         
                     }
                    
@@ -85,7 +91,6 @@ class CadastroCompras extends React.Component{
                    const errors =  erro.errors
                    this.setState({errors: errors})
                 }
-
            
         }
             

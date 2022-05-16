@@ -4,7 +4,6 @@ import api from '../../services/api';
 import {withRouter} from 'react-router-dom'
  
 
-
 class CadastroProdutos extends React.Component{
 
        
@@ -44,13 +43,22 @@ class CadastroProdutos extends React.Component{
                             this.limpaCampos()
                             this.setState({sucesso: true, atualizando: true})
                             this.props.history.push(`/consulta-produtos`)
-                        });
+                        }).catch(erro => {
+                            const data = [erro.response.data]
+                            this.setState({errors: data})
+                        })
+                        
                     }else{
                         api.post('api/produtos',produto)
                         .then(res => {
+                           
                             this.limpaCampos()
                             this.setState({sucesso: true, atualizando: false})
-                        });
+                        }).catch(erro => {
+                            const data = [erro.response.data]
+                            this.setState({errors: data})
+                        })
+                            
                     }
                    
                 } catch(erro){
@@ -133,7 +141,7 @@ class CadastroProdutos extends React.Component{
 
                             <div className="form-group">
                                 <label > Nome: *</label>
-                                <input type="text" 
+                                <input type="text" required
                                 name="nome" 
                                 onChange = {this.onChange}
                                 value={this.state.nome} 
@@ -145,12 +153,11 @@ class CadastroProdutos extends React.Component{
                         <div className="col-md-6">
                         <div className="form-group">
                         <label>Descrição: </label>
-                                <textarea className="form-control" 
+                                <input className="form-control"  required
                                 name="descricao"
                                 onChange = {this.onChange}
-                                value={this.state.descricao} >
-
-                                </textarea>
+                                value={this.state.descricao} 
+                                />
                             </div>
                         </div>
 
@@ -161,7 +168,7 @@ class CadastroProdutos extends React.Component{
 
                             <div className="form-group">
                                 <label > Preço: *</label>
-                                <input type="text" 
+                                <input type="text" required
                                 value={this.state.preco} 
                                 name="preco" 
                                 onChange = {this.onChange}

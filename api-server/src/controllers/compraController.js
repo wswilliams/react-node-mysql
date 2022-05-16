@@ -14,7 +14,7 @@ exports.Insert = (req, res, next) => {
   const produtos = req.body.produtos
 
   if(produtos.length == 0){
-    res.status(status.NOT_FOUND).send()
+    res.status(status.NOT_FOUND).send("Obrigatório ao menos um produto")
   }
   Compra.create({
     total: total,
