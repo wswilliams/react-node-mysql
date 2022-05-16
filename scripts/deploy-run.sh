@@ -4,8 +4,6 @@ APP_NAME=Avaliação
 APP_VERSION=1.0
 APP_FRONTEND=react-node-mysql-app-client
 API_WEB_GATEWAY=react-node-mysql-api-server
-BUILD_TYPE=--prod
-
 
 echo
 echo "BUILDING $APP_NAME FRONTEND"
@@ -14,11 +12,6 @@ echo
 
 help() {
     echo "Usage:"
-
-    echo "$0 <BUILD_TYPE>"
-    echo
-    echo "BUILD_TYPE:"
-    echo "--prod: Build for production"
 }
 
 if [ "$1" = "--help" ]; then
@@ -27,19 +20,7 @@ if [ "$1" = "--help" ]; then
     exit 0
 fi
 
-echo APP_FRONTEND: $APP_FRONTEND
-
-# Install dependence
-
-npm install
-
-# Clear previous build
-
-rm -rf dist/
-
 # Build Project
-
-NODE_OPTIONS= npm build --prod
 
 # Deploy project pm2
     echo
@@ -57,10 +38,11 @@ NODE_OPTIONS= npm build --prod
 
     echo "STARTING BACKEND"
 
-    pm2 start index.js --name $APP_FRONTEND
+    pm2 start index.js --name $API_WEB_GATEWAY
 
     cd ..
 
+    echo APP_FRONTEND: $APP_FRONTEND
 
 # Deploy project pm2
     echo
@@ -68,9 +50,16 @@ NODE_OPTIONS= npm build --prod
     echo "====================================="
     echo
     
+    cd app-client/
+
+    # Install Dependencies
+    npm install
+
+    # Clear previous build
+    rm -rf build/
+
     # Buil frontend project   
-    cd app-client
-    npm build
+    npm run-script build
 
     # Start frontend project
 

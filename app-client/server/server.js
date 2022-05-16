@@ -13,7 +13,7 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(helmet());
 
-var distDir = '../dist/react-node-mysql-app-client/';
+var distDir = '../build/react-node-mysql-app-client/';
 
 app.use(express.static(path.join(__dirname, distDir)));
 app.use(/^((?!(api)).)*/, (req, res) => {
