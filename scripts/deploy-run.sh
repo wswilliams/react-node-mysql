@@ -20,8 +20,6 @@ if [ "$1" = "--help" ]; then
     exit 0
 fi
 
-# Build Project
-
 # Deploy project pm2
     echo
     echo "DEPLOYMENT BACKEND WITH PM2 MODE"
@@ -59,19 +57,18 @@ fi
     rm -rf build/
 
     # Buil frontend project   
-    npm run-script build
+    npm run build
 
     # Start frontend project
 
     pm2 delete $APP_FRONTEND
 
-    cd server/
+    cd app/
 
     npm install
 
     echo "STARTING FRONTEND"
 
-    pm2 start server.js --name $APP_FRONTEND
+    #npm start
 
-    # Restart backEnd Api-back-end
-    pm2 restart $API_WEB_GATEWAY
+   pm2 start server.js --name $APP_FRONTEND

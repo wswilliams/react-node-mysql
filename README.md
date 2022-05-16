@@ -11,5 +11,5 @@ Readme app client:
 ## Dependências 
 
 - Node js: __v14.17.0__ ou +
-
+- PM2: npm install pm2@latest -g
 - mysql:

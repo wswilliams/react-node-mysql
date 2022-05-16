@@ -10,10 +10,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(logger('dev'));
 app.use(helmet());
 
-var distDir = '../build/react-node-mysql-app-client/';
+var distDir = '../build';
 
 app.use(express.static(path.join(__dirname, distDir)));
 app.use(/^((?!(api)).)*/, (req, res) => {
