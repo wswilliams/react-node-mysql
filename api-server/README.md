@@ -1,14 +1,12 @@
-# CRUD MySql e Node
+# Api server
 
-## Dependências 
 
-- express: __4.17.1__
-- http-status: __1.3.2__
-- mysql2: __1.7.0__
-- sequelize: __5.18.4__
-
-## Install Dependências
+## Instalar as Dependências
+- Entrar no diretorio api-serve e rodar o comando: 
 - npm install
 
-## To Run 
+## Para execultar o serviço 
 - npm start
+
+## api rodando
+- http://localhost:3003

@@ -1,4 +1,4 @@
-# react-node-mysql
+# react-node-mysql node + msql and sequelize
 
 # run api server
 Readme api server: 
