@@ -1,0 +1,27 @@
+{
+  "name": "road-runner-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nodemon server.js",
+  "scripts": {
+    "start": "nodemon server"
+  },
+  "keywords": [],
+  "author": "Indt",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.1.0",
+    "bcrypt": "^3.0.6",
+    "config": "^3.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "helmet": "^3.12.0",
+    "http": "0.0.0",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.24.0",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  }
+}
